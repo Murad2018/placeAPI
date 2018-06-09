@@ -6,7 +6,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://murad2018:murodjon77@ds159254.mlab.com:59254/rest-api');
-var Place = require('./place')
+var Place = require('./place');
+var User = require("./user");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -19,7 +20,7 @@ router.get('/', function (req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
-router.route('/place')
+router.route('/places')
     .post(function (req, res) {
         var place = new Place();
         place.name = req.body.name;
@@ -40,7 +41,7 @@ router.route('/place')
         });
     });
 
-router.route('/place/:place_id')
+router.route('/places/:place_id')
     .get(function (req, res) {
         Place.findById(req.params.place_id, function (err, place) {
             if (err) res.send(err);
@@ -56,6 +57,7 @@ router.route('/place/:place_id')
             place.name = req.body.name;
             place.description = req.body.description;
             place.country = req.body.country;
+            place.image_url = req.body.image_url;
 
             //save the place
             place.save(function (err) {
@@ -76,7 +78,7 @@ router.route('/place/:place_id')
     });
 
 //adding new document to the collection
-router.route('/place/:place_id/reviews')
+router.route('/places/:place_id/reviews')
     .post(function (req, res) {
         Place.findById(req.params.place_id, function (err, place) {
             if (err) res.send(err);
@@ -96,7 +98,7 @@ router.route('/place/:place_id/reviews')
         })
     })
 
-    router.route('/place/:place_id/reviews')
+router.route('/places/:place_id/reviews')
     .get(function (req, res) {
         Place.findById(req.params.place_id, function (err, place) {
             if (err) res.send(err);
@@ -104,12 +106,40 @@ router.route('/place/:place_id/reviews')
             res.json(place.reviews).limit(2);
         });
     });
-     
-   
 
-    
+router.route("/register")
+    .post(function (req, res) {
+        var user = new User();
+        user.username = req.body.username;
+        user.password = req.body.password;
+
+        user.save(function (err) {
+            if (err) res.send(err);
+            res.json({ message: 'User created' });
+        });
+    });
+
+router.route("/login")
+    .post(function (req, res) {
+        User.findOne({ username: req.body.username, password: req.body.password },
+            function (err, user) {
+                if (err){ 
+                    res.json(err);
+                }
+                else {
+                    if (user) {                        
+                        res.json({ message: 'Login successfull!!' });
+                    }
+                    else {
+                        res.json({ message: 'User does not exist' });
+                    }
+
+                }
 
 
+
+            })
+    })
 
 
 

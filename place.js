@@ -12,7 +12,8 @@ var PlaceSchema = new Schema({
         name: String,
         description: String,
         country: String,
-        categories:[],        
+        categories:String,
+        image_url:String,        
         createdAt:{type: Date, default: Date.now},
         reviews: [ratingSchema] //adding new document by creating new schema
     });
