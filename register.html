@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title>Document</title>
+    <style>
+        body {
+            background: #8b898c;
+        }
+
+        .container {
+            margin-top: 2%;
+            width: 50vw;
+        }
+
+        .btn {
+            margin-top: 2em;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.9em;
+            ;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <div class="jumbotron">
+            <form>
+                <div class="form-group">
+                    <label for="full_name">Full name</label>
+                    <input type="text" class="form-control" id="full_name" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Choose a username">
+                </div>
+                <div class="form-group">
+                    <label for="user_email">Email address</label>
+                    <input type="email" class="form-control" id="user_email" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="user_password">Password</label>
+                    <input type="password" class="form-control" id="user_password" placeholder="Password">
+                    <small id="emailHelp" class="form-text text-muted">Password must be at least 8 characters and include a number or numbers.</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password">
+                </div>
+                <button type="submit" id="form_submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#form_submit').click(function () {
+                var full_name = $("#full_name").val();
+                var username = $("#username").val();
+                var user_email = $("#user_email").val();
+                var user_password = $("#user_password").val();
+                var confirm_password = $("#confirm_password").val();
+
+                if (full_name == '' || username == '' || user_email == '' || user_password == '' || confirm_password == '') {
+                    alert('Please fill all fields!');
+                } else if (user_password.length < 8 && !(user_password.match(/\d+/g))) {
+                    alert('Password must have at least 8 characters and contain a number or numbers');
+                } else if(!(user_password).match(confirm_password) ){
+                    alert('Your passwords does not match');
+                } else{
+                    // var url = "signup_success.html";
+                    // window.location.href = url;
+                    window.location.replace("signup_success.html");
+                    // $(location).attr('href', 'http://www.google.com');
+                }
+
+                
+            })
+        })
+
+    </script>
+
+</body>
+
+</html>

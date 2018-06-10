@@ -110,6 +110,7 @@ router.route('/places/:place_id/reviews')
 router.route("/register")
     .post(function (req, res) {
         var user = new User();
+        user.firstname = req.body;
         user.username = req.body.username;
         user.password = req.body.password;
 

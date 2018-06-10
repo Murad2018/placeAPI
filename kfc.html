@@ -9,30 +9,45 @@
 </head>
 
 <body>
-    <button>BUtton</button>
+    
     <ul>
         <li>
-            <div id="imgId"></div>
+            <div id="imgId"><img src="" alt=""></div>
         </li>
         <li id="name"></li>
         <li id="description"></li>
-        <li id="country"></li>
-        <li id="reviews"></li>
+        <li id="country"></li>        
     </ul>
+    <h3>Reviewed by: </h3>
+    <p id="rating"> <strong> Rated(0-5): </strong></p>
+    <p id="review"> <strong> Review: </strong></p>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
 
     <script>
         $(document).ready(function () {
-            $("button").click(function () {
-                $.get("http://localhost:8080/api/places/5b0ea91b500fc83ebcba8a3e", function (data, status) {
-                    var json = jQuery.parseJSON.parse(results);
-                    console.log(json);
-                    console.log(data.results[0].name);
-                    console.log(data.results[0].email);
+            // $("button").click(function () {
+                $.get("https://stark-fjord-13201.herokuapp.com/api/places/5b0ea91b500fc83ebcba8a3e", function (data, status) {
+                    // var json = jQuery.parseJSON(data);
+                    var image_url = data.image_url;
+                    var name = data.name;
+                    var description = data.description;
+                    var country = data.country;
+                    var firstrev = data.reviews[0].name;
+                    
+                    console.log(data);
+                    $("img").attr("src", image_url);
+                    $("#name").html(name);
+                    $("#description").html(description);
+                    $("#country").html(country);
+                    $("h3").append(firstrev);
+                    $("#rating").append(data.reviews[0].rating);
+                    $("#review").append(data.reviews[0].review);
+
+                   
                 });
-            });
+            // });
         });
 
     </script>
