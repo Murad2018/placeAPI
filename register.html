@@ -68,6 +68,7 @@
     <script>
         $(document).ready(function () {
             $('#form_submit').click(function () {
+                $.post('https://stark-fjord-13201.herokuapp.com/api/register')
                 var full_name = $("#full_name").val();
                 var username = $("#username").val();
                 var user_email = $("#user_email").val();
@@ -80,11 +81,10 @@
                     alert('Password must have at least 8 characters and contain a number or numbers');
                 } else if(!(user_password).match(confirm_password) ){
                     alert('Your passwords does not match');
-                } else{
-                    // var url = "signup_success.html";
-                    // window.location.href = url;
-                    window.location.replace("signup_success.html");
+                } else{                  
+                    // window.location.replace("signup_success.html");
                     // $(location).attr('href', 'http://www.google.com');
+                    alert('success!');
                 }
 
                 
