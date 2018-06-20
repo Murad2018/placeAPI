@@ -8,9 +8,16 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://murad2018:murodjon77@ds159254.mlab.com:59254/rest-api');
 var Place = require('./place');
 var User = require("./user");
+var config = require('./config.js');
+var passport = require('passport');
+var jwt = require('jsonwebtoken');
+var auth = require('./auth.js')();
+require('./auth.js')(passport)
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(auth.initialize());
 
 var port = process.env.PORT || 8080;
 
@@ -122,40 +129,32 @@ router.route("/register")
 
 router.route("/login")
     .post(function (req, res) {
-        User.findOne({ username: req.body.username, password: req.body.password },
+        User.findOne({username: req.body.username},
             function (err, user) {
-                if (err){ 
+                if (err) {
                     res.json(err);
                 }
                 else {
-                    if (user) {                        
-                        res.json({ message: 'Login successfull!!' });
+                    if (user) {
+                        // res.json({ message: 'Login successfull!!' });
+                        user.verifyPassword(req.body.password, function (err, isMatch) {
+                            if (isMatch && !err) {
+                                var token = jwt.sign(user.toJSON(), config.secret, {
+                                    expiresIn: 10080
+                                });
+                                res.json({ success: true, token: token });
+                            } else {
+                                res.json({ success: false, message: 'Authentication failed' });
+                            }
+                        });
                     }
                     else {
                         res.json({ message: 'User does not exist' });
                     }
 
                 }
-
-
-
-            })
-    })
-
-
-
-// router.route('/place/:place_id/reviews')
-// .delete(function(req, res){
-//     Place.remove({
-//         _id: req.params.review_id
-//     }, function(err, place){
-//         if (err)  res.send(err);
-
-//         res.json({message:'Successfully deleted'});
-//     })
-// })
-
-
+            });
+    });
 
 app.use('/api', router);
 app.listen(port);
